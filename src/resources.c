@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static struct Texture textureMap[] = {
   {"player", "src/textures/player.png", 0}
@@ -13,14 +14,8 @@ void initResources() {
   int mapSize = sizeof(textureMap) / sizeof(struct Texture);
 
   for (int i = 0; i < mapSize; i++) {
-    char resolvedPath[1000];
-    char *result = realpath(textureMap[i].path, resolvedPath);
-    if (result != NULL) {
-      int id = loadTexture(resolvedPath);
-      textureMap[i].id = id;
-    } else {
-      error("The path to the resource is not valid! Evaluating %s", textureMap[i].path);
-    }
+    int id = loadTexture(textureMap[i].path);
+    textureMap[i].id = id;
   }
 }
 
@@ -28,7 +23,7 @@ unsigned int getResource(char *name) {
   int mapSize = sizeof(textureMap) / sizeof(struct Texture);
 
   for (int i = 0; i < mapSize; i++) {
-    if (textureMap[i].name == name) {
+    if (strcmp(textureMap[i].name, name) == 0) {
       return textureMap[i].id;
     }
   }

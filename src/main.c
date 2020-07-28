@@ -51,6 +51,4 @@ int main(void) {
 
   glfwTerminate();
   return 0;
-
-  return 0;
 }

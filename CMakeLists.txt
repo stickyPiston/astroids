@@ -13,6 +13,9 @@ file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.c")
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${INCLUDE_DIR}")
 
+# STB
+target_include_directories(${PROJECT_NAME} PRIVATE "${LIB_DIR}/stb")
+
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw")
 set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
@@ -30,6 +33,3 @@ add_library("glad" "${GLAD_DIR}/src/glad.c")
 target_include_directories("glad" PRIVATE "${GLAD_DIR}/include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLAD_DIR}/include")
 target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
-
-#stb_images
-target_include_directories(${PROJECT_NAME} PRIVATE "${LIB_DIR}/stbi")

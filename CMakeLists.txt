@@ -4,13 +4,14 @@ project(Astroids)
 
 # Source files
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.c")
 
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}")
-# set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+target_include_directories(${PROJECT_NAME} PRIVATE "${INCLUDE_DIR}")
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw")

@@ -1,65 +1,56 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <astroids/window.h>
+#include <astroids/shader.h>
+#include <astroids/quad.h>
+#include <astroids/sprite.h>
+#include <astroids/resources.h>
+#include <astroids/file.h>
+#include <astroids/error.h>
+
 #include <stdio.h>
+#include <stdlib.h>
 
-void errorCallback(int error, const char* description) {
-  fprintf(stderr, "GLFW error %d: %s\n", error, description);
-}
 
-GLFWwindow *initialize() {
-  int glfwInitRes = glfwInit();
-  if (!glfwInitRes) {
-    perror("Unable to initialize GLFW\n");
-    return NULL;
+int main(void) {
+
+  GLFWwindow *window = createWindow();
+
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    error("Error while initializing GLAD");
+    exit(1);
   }
 
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+  int screenWidth, screenHeight;
+  glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
+  glViewport(0, 0, screenWidth, screenHeight);
 
-  GLFWwindow* window = glfwCreateWindow(1280, 720, "InitGL", NULL, NULL);
-  if (!window) {
-    perror("Unable to create GLFW window\n");
-    glfwTerminate();
-    return NULL;
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+  // Initialize all resources (for now, only textures)
+  initResources();
+
+  // Load necessary components for a sprite.
+  struct Shape quad = generateQuad();
+  char *vertexShaderSource = readFile("src/shaders/vertex.glsl");
+  char *fragmentShaderSource = readFile("src/shaders/fragment.glsl");
+  unsigned int program = generateShaders(vertexShaderSource, fragmentShaderSource);
+  unsigned int texture = getResource("player");
+
+  struct Sprite sprite = {quad, texture, program};
+
+  while (!glfwWindowShouldClose(window)) {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    draw(sprite);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
   }
 
-  glfwMakeContextCurrent(window);
+  glfwTerminate();
+  return 0;
 
-  int gladInitRes = gladLoadGL();
-  if (!gladInitRes) {
-    perror("Unable to initialize glad\n");
-    glfwDestroyWindow(window);
-    glfwTerminate();
-    return NULL;
-  }
-
-  return window;
-}
-
-
-int main(int argc, char* argv[]) {
-   glfwSetErrorCallback(errorCallback);
-
-   GLFWwindow* window = initialize();
-   if (!window) {
-     return 0;
-   }
-
-   // Set the clear color to a nice green
-   glClearColor(0.15f, 0.6f, 0.4f, 1.0f);
-
-   while (!glfwWindowShouldClose(window)) {
-     glClear(GL_COLOR_BUFFER_BIT);
-
-     glfwSwapBuffers(window);
-     glfwPollEvents();
-   }
-
-   glfwDestroyWindow(window);
-   glfwTerminate();
-
-   return 0;
+  return 0;
 }

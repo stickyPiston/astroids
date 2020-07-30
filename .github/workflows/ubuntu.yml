@@ -1,0 +1,23 @@
+name: Application build on Ubuntu
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install glfw3 package and dependencies
+      run: sudo apt-get install libglfw3-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
+    - name: Clone submodules
+      run: git submodule update --init
+    - name: Run cmake
+      run: cmake -S . -B bin -G "Unix Makefiles"
+    - name: Run make
+      run: cd bin && make

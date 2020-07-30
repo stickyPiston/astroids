@@ -1,0 +1,21 @@
+name: Application build on macOS
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clone submodules
+      run: git submodule update --init
+    - name: Run cmake
+      run: cmake -S . -B bin -G "Unix Makefiles"
+    - name: Run make
+      run: cd bin && make

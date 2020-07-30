@@ -1,0 +1,21 @@
+name: Application build on Windows (MinGW)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clone submodules
+      run: git submodule update --init
+    - name: Run cmake
+      run: cmake -S . -B bin -G "MinGW Makefiles"
+    - name: Run make
+      run: cd bin && mingw32-make

@@ -1,6 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#define STB_DS_IMPLEMENTATION
+#include <stb/stb_ds.h>
+
 #include <astroids/window.h>
 #include <astroids/shader.h>
 #include <astroids/quad.h>
@@ -8,14 +11,20 @@
 #include <astroids/resources.h>
 #include <astroids/file.h>
 #include <astroids/error.h>
+#include <astroids/input.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
 
+struct Sprite *entities = NULL;
+int keys[1024] = {};
+
 int main(void) {
 
   GLFWwindow *window = createWindow();
+
+  glfwSetKeyCallback(window, key_callback);
 
   // Uncomment the following line to disable vsync
   //glfwSwapInterval(0);
@@ -50,13 +59,27 @@ int main(void) {
     0.5,        // x 
     0.5,        // y
     0.03,       // width
-    0.05        // height
+    0.05,       // height
+    3.14,       // rotation
+    NULL        // Update function
   };
+  arrput(entities, sprite);
+
+  float lastFrame = 0.0;
 
   while (!glfwWindowShouldClose(window)) {
+    float currentFrame = glfwGetTime();
+    float dt = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
     glClear(GL_COLOR_BUFFER_BIT);
 
-    draw(sprite);
+    handleInput(dt);
+
+    for (int i = 0; i < arrlen(entities); i++) {
+      if (entities[i].update != NULL) entities[i].update(i);
+      draw(entities[i]);
+    }
 
     glfwSwapBuffers(window);
     glfwPollEvents();

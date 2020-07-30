@@ -14,7 +14,7 @@ void draw(struct Sprite sprite) {
   float ty = sprite.y;
   float tz = 0.0;
 
-  float a = 0.0;
+  float a = sprite.rotation;
 
   float transformMatrix[] = {
     sx * cos(a), -sx * sin(a), 0 , tx,

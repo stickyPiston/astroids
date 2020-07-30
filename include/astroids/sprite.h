@@ -13,6 +13,10 @@ struct Sprite {
 
   float width;
   float height;
+
+  float rotation;
+
+  void (*update)(int index);
 };
 
 void draw(struct Sprite sprite);

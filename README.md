@@ -1,4 +1,8 @@
 # Astroids
+![Ubuntu](https://github.com/stickyPiston/astroids/workflows/Application%20build%20on%20Ubuntu/badge.svg)
+![Application build on Windows (MinGW)](https://github.com/stickyPiston/astroids/workflows/Application%20build%20on%20Windows%20(MinGW)/badge.svg)
+![Application build on macOS](https://github.com/stickyPiston/astroids/workflows/Application%20build%20on%20macOS/badge.svg)
+
 This is the repository for my take on the classic arcade game [Astroids](https://en.wikipedia.org/wiki/Asteroids_(video_game)) built in C using [GLFW](https://www.glfw.org) and OpenGL.
 
 ## Building

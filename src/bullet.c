@@ -5,20 +5,25 @@
 
 #include <math.h>
 
-#define PI 3.1415
-
 struct Sprite *entities;
 
 static void bullet_update(int index, float dt) {
   float speed = 2;
 
   // Transform a first, because openGL messes up the rotations for whatever reason.
-  float a = (entities[index].rotation - 1.57) + PI;
+  float a = (entities[index].rotation - 1.57) + M_PI;
 
   entities[index].x += speed * cos(a) * dt;
   entities[index].y += speed * sin(a) * dt;
 
-  // FIXME: If bullet is out of bounds, free the memory
+  if (
+       entities[index].x > 1
+    || entities[index].x < -1
+    || entities[index].y > 1
+    || entities[index].y < -1
+  ) {
+    arrdel(entities, index);
+  }
 }
 
 void makeBullet() {

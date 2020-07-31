@@ -10,6 +10,7 @@
 #include <astroids/input.h>
 #include <astroids/resources.h>
 #include <astroids/player.h>
+#include <astroids/astroid.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +19,7 @@
 // TODO: Split global entities variable into player, bullets and astroids.
 struct Sprite *entities = NULL;
 int keys[1024] = {};
+
 
 int main(void) {
 
@@ -45,16 +47,23 @@ int main(void) {
   makePlayer();
 
   float lastFrame = 0.0;
+  float astroidTimeout = 1;
 
   while (!glfwWindowShouldClose(window)) {
     float currentFrame = glfwGetTime();
     float dt = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
+    if (astroidTimeout > 0) {
+      astroidTimeout -= dt;
+    } else {
+      makeAstroid();
+      astroidTimeout = 1;
+    }
+
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // TODO: Make astroids
-    // TODO: Periodically spawn astroids
+    // TODO: Make collision detection system
     // TODO: Add lives variable
     // TODO: Implement text rendering
     // TODO: Make astroids hurt player

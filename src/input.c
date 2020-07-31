@@ -2,9 +2,8 @@
 #include <stb/stb_ds.h>
 
 #include <astroids/sprite.h>
-#include <astroids/file.h>
 #include <astroids/resources.h>
-#include <astroids/shader.h>
+#include <astroids/bullet.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +13,6 @@
 struct Sprite *entities;
 int keys[1024];
 float shootTimeout = 0;
-
-#define PI 3.1415
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
   if (key >= 0 && key < 1024) {
@@ -40,7 +37,7 @@ void handleInput(float dt) {
     float speed = 1;
 
     // Transform a first, because openGL messes up the rotations for whatever reason.
-    float a = (entities[0].rotation - 1.57) + PI;//(1 / 2) * PI);
+    float a = (entities[0].rotation - 1.57) + M_PI;
 
     entities[0].x += speed * cos(a) * dt;
     entities[0].y += speed * sin(a) * dt;

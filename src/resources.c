@@ -10,7 +10,12 @@
 #include <string.h>
 
 static struct Texture textureMap[] = {
-  {"player", "src/textures/player.png", 0}
+  {"player", "src/textures/player.png", 0},
+  {"astroid1", "src/textures/astroid_1.png", 0},
+  {"astroid2", "src/textures/astroid_2.png", 0},
+  {"astroid3", "src/textures/astroid_3.png", 0},
+  {"astroid4", "src/textures/astroid_4.png", 0},
+  {"astroid5", "src/textures/astroid_5.png", 0}
 };
 
 static unsigned int shaderProgram = 0;
@@ -33,12 +38,12 @@ void initResources() {
 }
 
 struct Shape getShape() {
-  if (quad.VAO == 0 && quad.EBO == 0) error("The quad is 0, did initResources run?");
+  if (quad.VAO == 0 && quad.EBO == 0) error("The quad is 0, did initResources run?\n");
   return quad;
 }
 
 unsigned int getShader() {
-  if (shaderProgram == 0) error("The shader program is 0, did initResources() run?");
+  if (shaderProgram == 0) error("The shader program is 0, did initResources() run?\n");
   return shaderProgram;
 }
 
@@ -51,6 +56,6 @@ unsigned int getTexture(char *name) {
     }
   }
 
-  error("Resource requested that doesn't exist within the textureMap!");
+  error("Resource requested that doesn't exist within the textureMap! Evaluating %s\n", name);
   return 0; 
 }

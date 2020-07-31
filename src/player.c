@@ -6,7 +6,11 @@
 #include <astroids/sprite.h>
 #include <astroids/resources.h>
 
-struct Sprite *entities;
+struct {
+  struct Sprite player;
+  struct Sprite *bullets;
+  struct Sprite *astroids;
+} entities;
 
 void makePlayer() {
   struct Shape quad = getShape();
@@ -24,5 +28,5 @@ void makePlayer() {
     3.14,       // rotation
     NULL        // Update function
   };
-  arrput(entities, sprite);
+  entities.player = sprite;
 }

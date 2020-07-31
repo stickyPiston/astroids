@@ -8,24 +8,46 @@
 #include <string.h>
 #include <stdio.h>
 
-struct Sprite *entities;
+struct {
+  struct Sprite player;
+  struct Sprite *bullets;
+  struct Sprite *astroids;
+} entities;
+int lives;
 
 static void astroid_update(int index, float dt) {
   float speed = 0.5;
 
   // Transform a first, because openGL messes up the rotations for whatever reason.
-  float a = (entities[index].rotation - 1.57) + M_PI;
+  float a = (entities.astroids[index].rotation - 1.57) + M_PI;
 
-  entities[index].x += speed * cos(a) * dt;
-  entities[index].y += speed * sin(a) * dt;
+  entities.astroids[index].x += speed * cos(a) * dt;
+  entities.astroids[index].y += speed * sin(a) * dt;
+
+  struct Sprite player = entities.player;
+  struct Sprite astroid = entities.astroids[index];
+  int hit = 0;
+  if (
+       player.x + player.width >= astroid.x
+    && player.x <= astroid.x + 0.9 * astroid.width
+    && player.y + player.height >= astroid.y
+    && player.y <= astroid.y + 0.9 * astroid.height
+  ) {
+    hit = 1;
+    lives--;
+    arrdel(entities.astroids, index);
+  }
 
   if (
-       entities[index].x > 1
-    || entities[index].x < -1
-    || entities[index].y > 1
-    || entities[index].y < -1
+       !hit
+    && (
+       entities.astroids[index].x > 1
+    || entities.astroids[index].x < -1
+    || entities.astroids[index].y > 1
+    || entities.astroids[index].y < -1
+    )
   ) {
-    arrdel(entities, index);
+    arrdel(entities.astroids, index);
   }
 }
 
@@ -91,5 +113,5 @@ void makeAstroid() {
     astroid_update        // update
   };
 
-  arrput(entities, sprite);
+  arrput(entities.astroids, sprite);
 }

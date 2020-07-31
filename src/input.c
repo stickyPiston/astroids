@@ -10,7 +10,11 @@
 #include <time.h>
 #include <math.h>
 
-struct Sprite *entities;
+struct {
+  struct Sprite player;
+  struct Sprite *bullets;
+  struct Sprite *astroids;
+} entities;
 int keys[1024];
 float shootTimeout = 0;
 
@@ -26,21 +30,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void handleInput(float dt) {
   if (keys[GLFW_KEY_RIGHT]) {
-    entities[0].rotation -= 3.5 * dt;
+    entities.player.rotation -= 3.5 * dt;
   }
 
   if (keys[GLFW_KEY_LEFT]) {
-    entities[0].rotation += 3.5 * dt;
+    entities.player.rotation += 3.5 * dt;
   }
 
   if (keys[GLFW_KEY_UP]) {
     float speed = 1;
 
     // Transform a first, because openGL messes up the rotations for whatever reason.
-    float a = (entities[0].rotation - 1.57) + M_PI;
+    float a = (entities.player.rotation - 1.57) + M_PI;
 
-    entities[0].x += speed * cos(a) * dt;
-    entities[0].y += speed * sin(a) * dt;
+    entities.player.x += speed * cos(a) * dt;
+    entities.player.y += speed * sin(a) * dt;
   }
 
   if (keys[GLFW_KEY_SPACE] && shootTimeout <= 0) {

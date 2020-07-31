@@ -17,8 +17,13 @@
 
 
 // TODO: Split global entities variable into player, bullets and astroids.
-struct Sprite *entities = NULL;
-int keys[1024] = {};
+struct {
+  struct Sprite player;
+  struct Sprite *bullets;
+  struct Sprite *astroids;
+} entities;
+int keys[1024];
+int lives = 3;
 
 
 int main(void) {
@@ -49,7 +54,7 @@ int main(void) {
   float lastFrame = 0.0;
   float astroidTimeout = 1;
 
-  while (!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(window) && lives > 0) {
     float currentFrame = glfwGetTime();
     float dt = currentFrame - lastFrame;
     lastFrame = currentFrame;
@@ -64,18 +69,23 @@ int main(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // TODO: Make collision detection system
-    // TODO: Add lives variable
     // TODO: Implement text rendering
-    // TODO: Make astroids hurt player
     // TODO: Make title screen
     // TODO: Make death screen
 
     handleInput(dt);
 
-    for (int i = 0; i < arrlen(entities); i++) {
-      if (entities[i].update != NULL) entities[i].update(i, dt);
-      draw(entities[i]);
+    for (int i = 0; i < arrlen(entities.bullets); i++) {
+      if (entities.bullets[i].update != NULL) entities.bullets[i].update(i, dt);
+      draw(entities.bullets[i]);
     }
+
+    for (int i = 0; i < arrlen(entities.astroids); i++) {
+      if (entities.astroids[i].update != NULL) entities.astroids[i].update(i, dt);
+      draw(entities.astroids[i]);
+    }
+
+    draw(entities.player);
 
     glfwSwapBuffers(window);
     glfwPollEvents();

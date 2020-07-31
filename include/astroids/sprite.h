@@ -16,7 +16,7 @@ struct Sprite {
 
   float rotation;
 
-  void (*update)(int index);
+  void (*update)(int index, float dt);
 };
 
 void draw(struct Sprite sprite);

@@ -1,6 +1,8 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
+#include <astroids/quad.h>
+
 struct Texture {
   char *name;
   char *path;
@@ -9,6 +11,10 @@ struct Texture {
 
 void initResources();
 
-unsigned int getResource(char *name);
+struct Shape getShape();
+
+unsigned int getShader();
+
+unsigned int getTexture(char *name);
 
 #endif

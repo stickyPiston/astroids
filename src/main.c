@@ -5,18 +5,17 @@
 #include <stb/stb_ds.h>
 
 #include <astroids/window.h>
-#include <astroids/shader.h>
-#include <astroids/quad.h>
 #include <astroids/sprite.h>
-#include <astroids/resources.h>
-#include <astroids/file.h>
 #include <astroids/error.h>
 #include <astroids/input.h>
+#include <astroids/resources.h>
+#include <astroids/player.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
 
+// TODO: Split global entities variable into player, bullets and astroids.
 struct Sprite *entities = NULL;
 int keys[1024] = {};
 
@@ -43,27 +42,7 @@ int main(void) {
   // Initialize all resources (for now, only textures)
   initResources();
 
-  // TODO: Make the player moveable
-
-  // Load necessary components for a sprite.
-  struct Shape quad = generateQuad();
-  char *vertexShaderSource = readFile("src/shaders/vertex.glsl");
-  char *fragmentShaderSource = readFile("src/shaders/fragment.glsl");
-  unsigned int program = generateShaders(vertexShaderSource, fragmentShaderSource);
-  unsigned int texture = getResource("player");
-
-  struct Sprite sprite = {
-    quad,       // shape
-    texture,    // texture
-    program,    // shaders
-    0.5,        // x 
-    0.5,        // y
-    0.03,       // width
-    0.05,       // height
-    3.14,       // rotation
-    NULL        // Update function
-  };
-  arrput(entities, sprite);
+  makePlayer();
 
   float lastFrame = 0.0;
 
@@ -74,10 +53,18 @@ int main(void) {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // TODO: Make astroids
+    // TODO: Periodically spawn astroids
+    // TODO: Add lives variable
+    // TODO: Implement text rendering
+    // TODO: Make astroids hurt player
+    // TODO: Make title screen
+    // TODO: Make death screen
+
     handleInput(dt);
 
     for (int i = 0; i < arrlen(entities); i++) {
-      if (entities[i].update != NULL) entities[i].update(i);
+      if (entities[i].update != NULL) entities[i].update(i, dt);
       draw(entities[i]);
     }
 

@@ -3,6 +3,7 @@
 
 #define STB_DS_IMPLEMENTATION
 #include <stb/stb_ds.h>
+#include <stb/stb.h>
 
 #include <astroids/window.h>
 #include <astroids/sprite.h>
@@ -11,12 +12,16 @@
 #include <astroids/resources.h>
 #include <astroids/player.h>
 #include <astroids/astroid.h>
+#include <astroids/state.h>
+#include <astroids/titles.h>
+#include <astroids/score.h>
+#include <astroids/lives.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
 
-// TODO: Split global entities variable into player, bullets and astroids.
+// TODO: Move global variables into own header
 struct {
   struct Sprite player;
   struct Sprite *bullets;
@@ -24,6 +29,8 @@ struct {
 } entities;
 int keys[1024];
 int lives = 3;
+enum State gameState = STATE_MAIN_MENU;
+int score;
 
 
 int main(void) {
@@ -46,18 +53,19 @@ int main(void) {
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-  // Initialize all resources (for now, only textures)
+  // Initialize all resources
   initResources();
-
-  makePlayer();
 
   float lastFrame = 0.0;
   float astroidTimeout = 1;
+  float pressStartBlinkingInterval = 0.8;
 
-  while (!glfwWindowShouldClose(window) && lives > 0) {
+  while (!glfwWindowShouldClose(window)) {
     float currentFrame = glfwGetTime();
     float dt = currentFrame - lastFrame;
     lastFrame = currentFrame;
+
+    glClear(GL_COLOR_BUFFER_BIT);
 
     if (astroidTimeout > 0) {
       astroidTimeout -= dt;
@@ -66,26 +74,43 @@ int main(void) {
       astroidTimeout = 1;
     }
 
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // TODO: Make collision detection system
-    // TODO: Implement text rendering
-    // TODO: Make title screen
     // TODO: Make death screen
 
     handleInput(dt);
 
-    for (int i = 0; i < arrlen(entities.bullets); i++) {
-      if (entities.bullets[i].update != NULL) entities.bullets[i].update(i, dt);
-      draw(entities.bullets[i]);
-    }
-
     for (int i = 0; i < arrlen(entities.astroids); i++) {
-      if (entities.astroids[i].update != NULL) entities.astroids[i].update(i, dt);
+      entities.astroids[i].update(i, dt);
       draw(entities.astroids[i]);
     }
 
-    draw(entities.player);
+    // TODO: Move game loop into separate file
+    if (gameState == STATE_GAME) {
+      // TODO: Add score and lives meters
+      // TODO: Make function for displaying digits
+      for (int i = 0; i < arrlen(entities.bullets); i++) {
+        entities.bullets[i].update(i, dt);
+        draw(entities.bullets[i]);
+      }
+
+      draw(getLivesTitle());
+      draw(getScoreTitle());
+
+      struct Sprite *digits = displayScore();
+      for (int i = 0; i < arrlen(digits); i++) {
+        draw(digits[i]);
+      }
+      arrfree(digits);
+
+      draw(displayLives());
+
+      if (entities.player.width != 0) draw(entities.player);
+    } else if (gameState == STATE_MAIN_MENU) {
+      draw(getTitle());
+
+      pressStartBlinkingInterval -= dt;
+      if (pressStartBlinkingInterval > 0) draw(getPressStart());
+      if (pressStartBlinkingInterval < -0.8) pressStartBlinkingInterval = 0.8;
+    }
 
     glfwSwapBuffers(window);
     glfwPollEvents();

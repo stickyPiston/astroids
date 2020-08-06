@@ -1,4 +1,5 @@
 #include <stb/stb_ds.h>
+#include <stb/stb.h>
 
 #include <astroids/quad.h>
 #include <astroids/file.h>

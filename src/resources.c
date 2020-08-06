@@ -10,12 +10,26 @@
 #include <string.h>
 
 static struct Texture textureMap[] = {
-  {"player", "src/textures/player.png", 0},
-  {"astroid1", "src/textures/astroid_1.png", 0},
-  {"astroid2", "src/textures/astroid_2.png", 0},
-  {"astroid3", "src/textures/astroid_3.png", 0},
-  {"astroid4", "src/textures/astroid_4.png", 0},
-  {"astroid5", "src/textures/astroid_5.png", 0}
+  {"player", SRC_DIR"/textures/player.png", 0},
+  {"start", SRC_DIR"/textures/start.png", 0},
+  {"title", SRC_DIR"/textures/title.png", 0},
+  {"score", SRC_DIR"/textures/score.png", 0},
+  {"lives", SRC_DIR"/textures/lives.png", 0},
+  {"astroid1", SRC_DIR"/textures/astroid_1.png", 0},
+  {"astroid2", SRC_DIR"/textures/astroid_2.png", 0},
+  {"astroid3", SRC_DIR"/textures/astroid_3.png", 0},
+  {"astroid4", SRC_DIR"/textures/astroid_4.png", 0},
+  {"astroid5", SRC_DIR"/textures/astroid_5.png", 0},
+  {"0", SRC_DIR"/textures/digits/0.png", 0},
+  {"1", SRC_DIR"/textures/digits/1.png", 0},
+  {"2", SRC_DIR"/textures/digits/2.png", 0},
+  {"3", SRC_DIR"/textures/digits/3.png", 0},
+  {"4", SRC_DIR"/textures/digits/4.png", 0},
+  {"5", SRC_DIR"/textures/digits/5.png", 0},
+  {"6", SRC_DIR"/textures/digits/6.png", 0},
+  {"7", SRC_DIR"/textures/digits/7.png", 0},
+  {"8", SRC_DIR"/textures/digits/8.png", 0},
+  {"9", SRC_DIR"/textures/digits/9.png", 0}
 };
 
 static unsigned int shaderProgram = 0;
@@ -30,9 +44,8 @@ void initResources() {
     textureMap[i].id = id;
   }
 
-  // FIXME: Generate paths on compilation to ensure they're always correct.
-  char *vertexShaderSource = readFile("src/shaders/vertex.glsl");
-  char *fragmentShaderSource = readFile("src/shaders/fragment.glsl");
+  char *vertexShaderSource = readFile(SRC_DIR"/shaders/vertex.glsl");
+  char *fragmentShaderSource = readFile(SRC_DIR"/shaders/fragment.glsl");
   shaderProgram = generateShaders(vertexShaderSource, fragmentShaderSource);
   quad = generateQuad();
 }

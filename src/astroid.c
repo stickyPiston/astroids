@@ -1,7 +1,9 @@
 #include <stb/stb_ds.h>
+#include <stb/stb.h>
 
 #include <astroids/resources.h>
 #include <astroids/sprite.h>
+#include <astroids/state.h>
 
 #include <math.h>
 #include <time.h>
@@ -14,6 +16,7 @@ struct {
   struct Sprite *astroids;
 } entities;
 int lives;
+enum State gameState;
 
 static void astroid_update(int index, float dt) {
   float speed = 0.5;
@@ -28,7 +31,8 @@ static void astroid_update(int index, float dt) {
   struct Sprite astroid = entities.astroids[index];
   int hit = 0;
   if (
-       player.x + player.width >= astroid.x
+       gameState == STATE_GAME
+    && player.x + player.width >= astroid.x
     && player.x <= astroid.x + 0.9 * astroid.width
     && player.y + player.height >= astroid.y
     && player.y <= astroid.y + 0.9 * astroid.height
@@ -60,6 +64,9 @@ void makeAstroid() {
 
   char *textureName = malloc(32);
   char *textureIndex = malloc(8);
+
+  strcpy(textureName, "");
+  strcpy(textureIndex, "");
 
   int ti = rand() % 5 + 1;
   strcat(textureName, "astroid");

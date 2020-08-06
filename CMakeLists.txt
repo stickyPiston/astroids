@@ -10,6 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.c")
 
 # Executable definition and properties
+SET(CMAKE_C_FLAGS -DSRC_DIR=\\"${CMAKE_CURRENT_SOURCE_DIR}/src\\")
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${INCLUDE_DIR}")
 

@@ -1,4 +1,5 @@
 #include <stb/stb_ds.h>
+#include <stb/stb.h>
 
 #include <astroids/resources.h>
 #include <astroids/sprite.h>
@@ -10,6 +11,8 @@ struct {
   struct Sprite *bullets;
   struct Sprite *astroids;
 } entities;
+int score;
+
 
 static void bullet_update(int index, float dt) {
   float speed = 2;
@@ -33,6 +36,7 @@ static void bullet_update(int index, float dt) {
       hit = 1;
       arrdel(entities.astroids, i);
       arrdel(entities.bullets, index);
+      score += 10;
     }
   } 
 

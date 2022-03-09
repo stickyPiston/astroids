@@ -3,3 +3,4 @@ bin/
 run.sh
 .ninja_deps
 .ninja_log
+build

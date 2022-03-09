@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-int lives;
+extern int lives;
 
 struct Sprite displayLives() {
   char livesString[3];

@@ -10,13 +10,13 @@
 #include <string.h>
 #include <stdio.h>
 
-struct {
+extern struct {
   struct Sprite player;
   struct Sprite *bullets;
   struct Sprite *astroids;
 } entities;
-int lives;
-enum State gameState;
+extern int lives;
+extern enum State gameState;
 
 static void astroid_update(int index, float dt) {
   float speed = 0.5;

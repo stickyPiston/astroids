@@ -6,13 +6,12 @@
 
 #include <math.h>
 
-struct {
+extern struct {
   struct Sprite player;
   struct Sprite *bullets;
   struct Sprite *astroids;
 } entities;
-int score;
-
+extern int score;
 
 static void bullet_update(int index, float dt) {
   float speed = 2;

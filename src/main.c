@@ -30,8 +30,7 @@ struct {
 int keys[1024];
 int lives = 3;
 enum State gameState = STATE_MAIN_MENU;
-int score;
-
+extern int score;
 
 int main(void) {
 

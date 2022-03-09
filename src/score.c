@@ -12,7 +12,6 @@
 
 int score = 0;
 
-
 struct Sprite *displayScore() {
   int copy = score;
 

@@ -13,13 +13,13 @@
 #include <time.h>
 #include <math.h>
 
-struct {
+extern struct {
   struct Sprite player;
   struct Sprite *bullets;
   struct Sprite *astroids;
 } entities;
-int keys[1024];
-enum State gameState;
+extern int keys[1024];
+extern enum State gameState;
 
 float shootTimeout = 0;
 

@@ -7,7 +7,7 @@
 #include <astroids/sprite.h>
 #include <astroids/resources.h>
 
-struct {
+extern struct {
   struct Sprite player;
   struct Sprite *bullets;
   struct Sprite *astroids;
